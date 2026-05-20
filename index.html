@@ -837,29 +837,32 @@ function renderQuestion() {
   const ans      = state.answers[q.question_id];
   const isHard   = q.score_type === "HARD";
 
+  // Lưu câu hỏi hiện tại vào state để các handler dùng
+  state.currentQ = q;
+
   let inputHtml = "";
   if (q.input_type === "YES_NO") {
-    inputHtml = `<div class="yn-wrap">` +
+    inputHtml = `<div class="yn-wrap" id="inputWrap">` +
       q.options.map(opt => {
         const isFail = isHard && !q.passing_answers.includes(opt);
         const sel    = ans === opt ? "selected" : "";
         return `<button class="yn-btn ${sel} ${isFail&&sel?"fail-answer":""}"
-          onclick="answerYN('${q.question_id}','${opt}',${JSON.stringify(q)},this)">${opt}</button>`;
+          data-qid="${q.question_id}" data-val="${opt}" data-type="YN">${opt}</button>`;
       }).join("") + `</div>`;
   } else if (q.input_type === "SINGLE_CHOICE") {
-    inputHtml = `<div class="sc-wrap">` +
+    inputHtml = `<div class="sc-wrap" id="inputWrap">` +
       q.options.map(opt => {
         const sel = ans === opt ? "selected" : "";
         return `<button class="sc-btn ${sel}"
-          onclick="answerSC('${q.question_id}','${opt}',this)">${opt}</button>`;
+          data-qid="${q.question_id}" data-val="${opt}" data-type="SC">${opt}</button>`;
       }).join("") + `</div>`;
   } else if (q.input_type === "MULTI_CHOICE") {
     const ansArr = Array.isArray(ans) ? ans : [];
-    inputHtml = `<div class="mc-wrap">` +
+    inputHtml = `<div class="mc-wrap" id="inputWrap">` +
       q.options.map(opt => {
         const sel = ansArr.includes(opt) ? "selected" : "";
         return `<button class="mc-btn ${sel}"
-          onclick="answerMC('${q.question_id}','${opt}',${JSON.stringify(q)},this)">${opt}</button>`;
+          data-qid="${q.question_id}" data-val="${opt}" data-type="MC">${opt}</button>`;
       }).join("") + `</div>
       <div class="form-hint" style="margin-top:8px">Có thể chọn nhiều lựa chọn</div>`;
   }
@@ -882,17 +885,35 @@ function renderQuestion() {
   document.getElementById("btnQPrev").style.visibility =
     state.currentQIdx === 0 ? "hidden" : "visible";
   document.getElementById("btnQNext").disabled = (ans === undefined || ans === "" || (Array.isArray(ans) && ans.length === 0));
+
+  // Gắn event listener cho wrap (tránh dùng onclick inline với JSON)
+  const wrap = document.getElementById("inputWrap");
+  if (wrap) {
+    wrap.addEventListener("click", function(e) {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const type = btn.dataset.type;
+      const qid  = btn.dataset.qid;
+      const val  = btn.dataset.val;
+      const cq   = state.currentQ;
+      if (type === "YN") answerYN(qid, val, cq, btn);
+      else if (type === "SC") answerSC(qid, val, btn);
+      else if (type === "MC") answerMC(qid, val, cq, btn);
+    });
+  }
 }
 
 // ── ANSWER HANDLERS ───────────────────────────────────
 function answerYN(qid, val, q, btn) {
+  // q có thể được truyền vào hoặc lấy từ state
+  const question = q || state.currentQ;
   state.answers[qid] = val;
   document.querySelectorAll(".yn-btn").forEach(b => {
     b.classList.remove("selected","fail-answer");
   });
   btn.classList.add("selected");
   // Đánh dấu fail nếu HARD và không đạt
-  if (q.score_type === "HARD" && !q.passing_answers.includes(val)) {
+  if (question && question.score_type === "HARD" && !question.passing_answers.includes(val)) {
     btn.classList.add("fail-answer");
     state.hardFailQ = qid;
   } else if (state.hardFailQ === qid) {
