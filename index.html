@@ -484,9 +484,9 @@ footer .footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:
 <!-- HERO -->
 <section class="hero">
   <div class="container">
-    <div class="hero-badge">✦ Do đội ngũ Tư vấn Visa Lửa Việt phát triển</div>
+    <div class="hero-badge">✦ Do đội ngũ Tư vấn Visa Lửa Việt phát triển ✦</div>
     <h1>Đánh giá Xác suất<br><span>Visa Du lịch</span> của bạn</h1>
-    <p class="hero-desc">Công cụ đánh giá dựa trên tiêu chí thực tế từ các lãnh sự quán, giúp bạn ước lượng xác suất đạt Visa du lịch trước khi nộp hồ sơ. Áp dụng cho công dân Việt Nam đi du lịch hoặc thăm thân tại 9 quốc gia/khu vực.</p>
+    <p class="hero-desc">Công cụ đánh giá dựa trên tiêu chí thực tế từ các Cơ quan Quản lý xuất nhập cảnh/Đại sứ quán/Lãnh sự quán, giúp bạn ước lượng xác suất đạt Visa du lịch trước khi nộp hồ sơ. Áp dụng cho công dân Việt Nam đi du lịch hoặc thăm thân tại 9 quốc gia/khu vực.</p>
     <p class="hero-notice">
       <strong>Lưu ý quan trọng:</strong> Kết quả từ công cụ này chỉ mang tính tham khảo về xác suất, không phải kết luận chính thức và không thay thế quyết định của cơ quan xét duyệt visa. Lửa Việt Tours không chịu trách nhiệm về kết quả xét duyệt cuối cùng của cơ quan thẩm quyền.
     </p>
@@ -496,7 +496,7 @@ footer .footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:
 <!-- STATS BAR -->
 <div class="stats-bar">
   <div class="stats-inner">
-    <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">Quốc gia</div></div>
+    <div class="stat-item"><div class="stat-num">9</div><div class="stat-label">Quốc gia/Khu vực</div></div>
     <div class="stat-item"><div class="stat-num">~5'</div><div class="stat-label">Hoàn thành</div></div>
     <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Miễn phí</div></div>
   </div>
@@ -558,11 +558,11 @@ footer .footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:
             <button class="opt-btn" onclick="selectGroup('Đi một mình',this)">
               <span class="opt-icon">🧑</span>Một mình
             </button>
-            <button class="opt-btn" onclick="selectGroup('Đi cùng bạn bè',this)">
-              <span class="opt-icon">👫</span>Bạn bè
-            </button>
             <button class="opt-btn" onclick="selectGroup('Đi cùng gia đình',this)">
               <span class="opt-icon">👨‍👩‍👦</span>Gia đình
+            </button>
+	    <button class="opt-btn" onclick="selectGroup('Đi cùng bạn bè',this)">
+              <span class="opt-icon">👫</span>Bạn bè
             </button>
           </div>
         </div>
@@ -597,7 +597,7 @@ footer .footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:
 <section id="faq" style="background:var(--white)">
   <div class="container">
     <div class="section-title">Câu hỏi thường gặp</div>
-    <div class="section-sub">Mọi thắc mắc về công cụ đánh giá và quyền lợi</div>
+    <div class="section-sub">Về công cụ đánh giá và quyền lợi</div>
     <div class="faq-list" id="faqList">
       <div style="text-align:center;color:var(--muted);padding:20px">Đang tải...</div>
     </div>
@@ -664,8 +664,22 @@ async function loadConfig() {
     const d = await apiFetch("getConfig");
     if (d.success) {
       state.config = d.config;
+      // Sau khi config load xong, cập nhật link lãnh sự
+      // (phòng người dùng đã chọn quốc gia trước khi config về)
+      updateConsulateLinks();
     }
   } catch(e) { console.warn("Config load failed:", e); }
+}
+
+// Cập nhật link lãnh sự cho tất cả thẻ quốc gia
+function updateConsulateLinks() {
+  COUNTRIES.forEach(c => {
+    const vl = document.getElementById("vl-" + c.code);
+    if (!vl) return;
+    const link = state.config["consulate_link_" + c.code];
+    if (link) { vl.href = link; vl.style.display = "block"; }
+    else { vl.style.display = "none"; }
+  });
 }
 
 async function loadFaq() {
@@ -727,13 +741,8 @@ function selectCountry(code, el) {
   state.country = code;
   document.getElementById("btnCountryNext").disabled = false;
 
-  // Hiển thị link lãnh sự nếu có
-  COUNTRIES.forEach(c => {
-    const vl = document.getElementById("vl-"+c.code);
-    if (!vl) return;
-    const link = state.config["consulate_link_"+c.code];
-    if (link) { vl.href = link; vl.style.display = "block"; }
-  });
+  // Hiển thị link lãnh sự (dùng hàm chung để đảm bảo luôn cập nhật đúng)
+  updateConsulateLinks();
 }
 
 // ── SCREEN 2: VISA TYPE & GROUP ───────────────────────
