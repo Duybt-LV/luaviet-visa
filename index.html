@@ -664,9 +664,7 @@ async function loadConfig() {
     const d = await apiFetch("getConfig");
     if (d.success) {
       state.config = d.config;
-      // Sau khi config load xong, cập nhật link lãnh sự
-      // (phòng người dùng đã chọn quốc gia trước khi config về)
-      updateConsulateLinks();
+
     }
   } catch(e) { console.warn("Config load failed:", e); }
 }
@@ -741,8 +739,16 @@ function selectCountry(code, el) {
   state.country = code;
   document.getElementById("btnCountryNext").disabled = false;
 
-  // Hiển thị link lãnh sự (dùng hàm chung để đảm bảo luôn cập nhật đúng)
-  updateConsulateLinks();
+  // Ẩn tất cả link trước, rồi chỉ hiện link của nước vừa chọn
+  COUNTRIES.forEach(c => {
+    const vl = document.getElementById("vl-" + c.code);
+    if (vl) vl.style.display = "none";
+  });
+  const vl = document.getElementById("vl-" + code);
+  if (vl) {
+    const link = state.config["consulate_link_" + code] || "";
+    if (link) { vl.href = link; vl.style.display = "block"; }
+  }
 }
 
 // ── SCREEN 2: VISA TYPE & GROUP ───────────────────────
