@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đánh giá Xác suất Visa Du lịch – Lửa Việt Tours</title>
 <meta name="description" content="Công cụ đánh giá xác suất đạt Visa du lịch cho công dân Việt Nam. Do đội ngũ tư vấn Visa Lửa Việt Tours phát triển.">
+<meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -71,7 +72,6 @@ header{
 .phone-label{display:flex;flex-direction:column;line-height:1.2}
 .phone-cta{font-size:10px;font-weight:500;opacity:0.85;letter-spacing:0.3px}
 .phone-num{font-size:15px;font-weight:700;letter-spacing:0.5px}
-/* Mobile: hiển thị hotline */
 @media(max-width:600px){
   .header-contact a{padding:7px 14px}
   .phone-cta{display:none}
@@ -275,13 +275,6 @@ header{
 .mc-btn.selected{border-color:var(--blue);background:var(--blue-light);color:var(--navy)}
 .mc-btn.selected::before{border-color:var(--blue);background:var(--blue)}
 
-/* HARD FAIL ALERT */
-.hard-fail-alert{
-  background:var(--red-light);border:1px solid #FECACA;
-  border-radius:8px;padding:12px 16px;margin-top:10px;
-  font-size:13px;color:var(--red);display:none;
-}
-
 /* ── NAVIGATION BUTTONS ── */
 .nav-wrap{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px}
 .btn{
@@ -298,7 +291,7 @@ header{
 .btn-lg{padding:14px 32px;font-size:15px}
 .btn-full{width:100%}
 
-/* ── FORM THÔNG TIN ── */
+/* ── FORM THÔNG TIN (Bước 4) ── */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 @media(max-width:560px){.form-grid{grid-template-columns:1fr}}
 .form-group{display:flex;flex-direction:column;gap:6px}
@@ -315,21 +308,86 @@ header{
 .form-hint{font-size:12px;color:var(--muted)}
 .form-error{font-size:12px;color:var(--red);display:none}
 
-/* ── KẾT QUẢ ── */
-.result-header{
-  border-radius:10px;padding:24px;margin-bottom:20px;
-  text-align:center;
+/* ── BƯỚC 4: NHẬP THÔNG TIN ── */
+.info-screen-wrap{
+  text-align:center;padding:8px 0 4px;
 }
-.result-icon{font-size:48px;margin-bottom:10px}
-.result-level{font-size:28px;font-weight:700;margin-bottom:4px}
-.result-score{font-size:14px;opacity:0.8}
-.result-level.pass{color:var(--green)}
-.result-level.medium{color:var(--amber)}
-.result-level.low{color:var(--red)}
-.result-header.pass{background:var(--green-bg);border:1px solid #A7F3D0}
-.result-header.medium{background:var(--amber-bg);border:1px solid #FDE68A}
-.result-header.low{background:var(--red-light);border:1px solid #FECACA}
+.info-summary-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--bg);border:1.5px solid var(--border);border-radius:20px;
+  padding:6px 16px;font-size:12.5px;color:var(--muted);margin-bottom:20px;
+}
+.info-summary-badge strong{color:var(--navy)}
 
+/* ── KẾT QUẢ NGẮN (Bước 5) ── */
+.result-summary-wrap{
+  text-align:center;padding:8px 0;
+}
+
+/* Gauge / Score display */
+.score-gauge{
+  position:relative;display:inline-flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  margin:0 auto 20px;
+}
+.score-circle{
+  width:140px;height:140px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  border:6px solid;
+  box-shadow:0 4px 20px rgba(0,0,0,0.12);
+  margin-bottom:8px;
+}
+.score-circle.pass{border-color:var(--green);background:var(--green-bg)}
+.score-circle.medium{border-color:#D97706;background:var(--amber-bg)}
+.score-circle.low{border-color:var(--red);background:var(--red-light)}
+.score-number{font-size:38px;font-weight:700;line-height:1}
+.score-number.pass{color:var(--green)}
+.score-number.medium{color:#B45309}
+.score-number.low{color:var(--red)}
+.score-unit{font-size:13px;font-weight:500;opacity:0.7;margin-top:2px}
+
+/* Component scores */
+.component-scores{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin:16px 0;text-align:left;
+}
+@media(max-width:500px){.component-scores{grid-template-columns:1fr}}
+.comp-item{
+  background:var(--bg);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;display:flex;align-items:center;gap:10px;
+}
+.comp-icon{font-size:18px;flex-shrink:0}
+.comp-label{font-size:12px;color:var(--muted);margin-bottom:2px}
+.comp-bar-wrap{
+  flex:1;background:var(--border);border-radius:3px;height:5px;
+  overflow:hidden;margin-top:3px;
+}
+.comp-bar{height:100%;border-radius:3px;transition:width 0.6s ease}
+.comp-bar.high{background:var(--green)}
+.comp-bar.mid{background:#F59E0B}
+.comp-bar.low-bar{background:var(--red)}
+.comp-score-txt{font-size:12px;font-weight:700;margin-top:2px}
+
+/* Result message */
+.result-msg{
+  border-radius:10px;padding:16px 20px;margin:16px 0;
+  text-align:left;font-size:14px;line-height:1.65;
+}
+.result-msg.pass{background:var(--green-bg);border-left:4px solid var(--green);color:#065F46}
+.result-msg.medium{background:var(--amber-bg);border-left:4px solid #D97706;color:#78350F}
+.result-msg.low{background:var(--red-light);border-left:4px solid var(--red);color:#7F1D1D}
+
+/* Email notice */
+.email-notice{
+  background:linear-gradient(135deg,#EFF6FF 0%,#E0F2FE 100%);
+  border:1px solid #BFDBFE;border-radius:10px;
+  padding:16px 20px;margin:16px 0;
+  display:flex;align-items:flex-start;gap:12px;
+  font-size:13.5px;color:#1e3a5f;line-height:1.6;
+}
+.email-notice-icon{font-size:22px;flex-shrink:0;margin-top:1px}
+
+/* ── KẾT QUẢ ── */
 .result-box{
   border-radius:8px;padding:16px 20px;margin-bottom:14px;
   font-size:14px;line-height:1.6;
@@ -338,13 +396,6 @@ header{
 .result-box.amber{background:var(--amber-bg);border-left:4px solid #D97706;color:#78350F}
 .result-box.red{background:var(--red-light);border-left:4px solid var(--red);color:#7F1D1D}
 .result-box.blue{background:var(--blue-light);border-left:4px solid var(--blue);color:#0C4A6E}
-
-.code-display{
-  background:var(--bg);border:1.5px dashed var(--border);
-  border-radius:8px;padding:14px;text-align:center;margin-bottom:14px;
-}
-.code-display .code-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
-.code-display .code-value{font-size:20px;font-weight:700;letter-spacing:3px;font-family:monospace;color:var(--navy)}
 
 /* Q&A review */
 .qa-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -365,13 +416,6 @@ header{
   padding:6px 12px;
 }
 
-/* Submit panel */
-.submit-panel{
-  border-top:1px solid var(--border);padding-top:20px;margin-top:20px;
-}
-.submit-title{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px}
-.submit-desc{font-size:13px;color:var(--muted);margin-bottom:16px}
-
 /* ── FAQ ── */
 #faq{padding:48px 0}
 .section-title{
@@ -379,7 +423,6 @@ header{
   margin-bottom:6px;letter-spacing:-0.3px;
 }
 .section-sub{font-size:14px;color:var(--muted);margin-bottom:28px}
-
 .faq-list{display:flex;flex-direction:column;gap:0}
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-item:first-child{border-top:1px solid var(--border)}
@@ -396,12 +439,8 @@ header{
   transition:all 0.2s;color:var(--muted);font-size:12px;
 }
 .faq-item.open .faq-chevron{background:var(--red);border-color:var(--red);color:#fff;transform:rotate(180deg)}
-.faq-a{
-  max-height:0;overflow:hidden;transition:max-height 0.3s ease;
-}
-.faq-a-inner{
-  padding-bottom:16px;font-size:14px;color:var(--slate);line-height:1.7;
-}
+.faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
+.faq-a-inner{padding-bottom:16px;font-size:14px;color:var(--slate);line-height:1.7;}
 
 /* ── TOAST ── */
 .toast{
@@ -410,8 +449,7 @@ header{
   padding:12px 20px;border-radius:8px;font-size:13px;
   box-shadow:0 4px 20px rgba(0,0,0,0.2);
   transform:translateY(80px);opacity:0;
-  transition:all 0.3s ease;
-  max-width:320px;
+  transition:all 0.3s ease;max-width:320px;
 }
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:var(--green)}
@@ -435,13 +473,99 @@ header{
 /* ── FOOTER ── */
 footer{
   background:var(--navy);color:rgba(255,255,255,0.55);
-  padding:28px 0;text-align:center;font-size:12.5px;
+  padding:28px 0;text-align:center;font-size:13.5px;
 }
 footer a{color:rgba(255,255,255,0.85);text-decoration:none;transition:color 0.15s}
 footer a:hover{color:#fff}
-footer .footer-links{display:flex;justify-content:center;gap:4px;margin-bottom:8px;flex-wrap:wrap;align-items:center}
-footer .footer-links a{padding:2px 10px}
+footer .footer-links{display:flex;justify-content:center;gap:0;margin-bottom:10px;flex-wrap:nowrap;align-items:center;white-space:nowrap}
+footer .footer-links a{padding:2px 10px;font-size:15px;font-weight:500;white-space:nowrap}
 footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
+footer .footer-copyright{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13.5px;padding:0 12px}
+@media(max-width:400px){
+  footer .footer-links a{padding:2px 6px;font-size:13px}
+}
+
+/* ── DARK MODE ── */
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:       #0F1117;
+    --white:    #1A1D27;
+    --navy:     #E2E8F0;
+    --slate:    #94A3B8;
+    --muted:    #64748B;
+    --border:   #2D3148;
+    --green-bg: #0D2B1E;
+    --amber-bg: #2B1E08;
+    --red-light:#2B0D0D;
+    --blue-light:#0D1B2B;
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.4);
+    --shadow:   0 4px 24px rgba(0,0,0,0.5);
+  }
+  body{background:var(--bg);color:var(--navy)}
+  header{background:#1A1D27;border-bottom-color:#2D3148}
+  .logo-text{color:#E2E8F0}
+  .hero{background:linear-gradient(135deg,#12162A 0%,#1C2140 100%)}
+  .hero-notice{background:rgba(255,255,255,0.04);border-color:rgba(255,255,255,0.08)}
+  .stats-bar{background:#1A1D27;border-bottom-color:#2D3148}
+  .stat-num{color:#F87171}
+  .stat-label{color:#64748B}
+  .card{background:#1A1D27;border-color:#2D3148}
+  .screen-title{color:#E2E8F0}
+  .screen-sub{color:#64748B}
+  .country-card{background:#1A1D27;border-color:#2D3148}
+  .country-card:hover{border-color:var(--red);box-shadow:0 2px 12px rgba(217,30,39,0.2)}
+  .country-card.selected{background:#2B0D0D}
+  .country-card .cname{color:#E2E8F0}
+  .opt-btn{background:#1A1D27;border-color:#2D3148;color:#94A3B8}
+  .opt-btn.selected{background:#2B0D0D;color:#F87171}
+  .q-text{color:#E2E8F0}
+  .q-hint{color:#64748B}
+  .q-group-label{color:#64748B}
+  .yn-btn,.sc-btn,.mc-btn{background:#1A1D27;border-color:#2D3148;color:#94A3B8}
+  .yn-btn.selected,.sc-btn.selected,.mc-btn.selected{background:#0D1B2B;color:#93C5FD}
+  .yn-btn.fail-answer{background:#2B0D0D!important;color:#F87171!important}
+  .btn-secondary{background:#1A1D27;border-color:#2D3148;color:#94A3B8}
+  .btn-secondary:hover{border-color:#64748B}
+  .form-input{background:#0F1117;border-color:#2D3148;color:#E2E8F0}
+  .form-input:focus{border-color:#60A5FA}
+  .form-label{color:#E2E8F0}
+  .form-hint{color:#64748B}
+  .info-summary-badge{background:#0F1117;border-color:#2D3148;color:#64748B}
+  .info-summary-badge strong{color:#E2E8F0}
+  .score-circle.pass{background:#0D2B1E}
+  .score-circle.medium{background:#2B1E08}
+  .score-circle.low{background:#2B0D0D}
+  .comp-item{background:#0F1117;border-color:#2D3148}
+  .comp-label{color:#64748B}
+  .comp-bar-wrap{background:#2D3148}
+  .result-msg.pass{background:#0D2B1E;color:#6EE7B7}
+  .result-msg.medium{background:#2B1E08;color:#FCD34D}
+  .result-msg.low{background:#2B0D0D;color:#FCA5A5}
+  .email-notice{background:linear-gradient(135deg,#0D1B2B 0%,#0A1929 100%);border-color:#1E3A5F;color:#93C5FD}
+  .result-box.green{background:#0D2B1E;color:#6EE7B7}
+  .result-box.amber{background:#2B1E08;color:#FCD34D}
+  .result-box.red{background:#2B0D0D;color:#FCA5A5}
+  .result-box.blue{background:#0D1B2B;color:#93C5FD}
+  .qa-table th{background:#0F1117;color:#64748B}
+  .qa-table td{color:#94A3B8}
+  .qa-table td:first-child{color:#E2E8F0}
+  .qa-group-row td{background:#0F1117;color:#64748B}
+  .faq-item{border-color:#2D3148}
+  .faq-q{color:#E2E8F0}
+  .faq-q:hover{color:#F87171}
+  .faq-a-inner{color:#94A3B8}
+  .faq-chevron{border-color:#2D3148;color:#64748B}
+  footer{background:#0A0C14}
+  footer a{color:rgba(255,255,255,0.85)}
+  footer .footer-copyright{color:rgba(255,255,255,0.55)}
+  /* Loading */
+  .loading-overlay{background:rgba(15,17,23,0.9)}
+  .spinner{border-color:#2D3148;border-top-color:var(--red)}
+  .loading-text{color:#64748B}
+  /* Code display */
+  .code-display{background:#0F1117;border-color:#2D3148}
+  .code-display .code-value{color:#E2E8F0}
+}
 
 /* ── RESPONSIVE ── */
 @media(max-width:600px){
@@ -449,10 +573,13 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
   .stats-inner{gap:0}
   .stat-num{font-size:18px}
   .country-grid{grid-template-columns:repeat(3,1fr)}
-  /* header-contact always visible */
   .nav-wrap{flex-direction:column-reverse}
   .nav-wrap .btn{width:100%}
 }
+
+/* ── Sending animation ── */
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.sending-anim{animation:pulse 1.2s ease-in-out infinite}
 </style>
 </head>
 <body>
@@ -517,7 +644,7 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
       <div class="progress-wrap">
         <div class="progress-bar" id="progressBar" style="width:5%"></div>
       </div>
-      <div class="step-label" id="stepLabel">Bước 1</div>
+      <div class="step-label" id="stepLabel">Bước 1 / 5</div>
     </div>
 
     <div class="card" style="padding:28px">
@@ -564,7 +691,7 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
             <button class="opt-btn" onclick="selectGroup('Đi cùng gia đình',this)">
               <span class="opt-icon">👨‍👩‍👦</span>Gia đình
             </button>
-	    <button class="opt-btn" onclick="selectGroup('Đi cùng bạn bè',this)">
+            <button class="opt-btn" onclick="selectGroup('Đi cùng bạn bè',this)">
               <span class="opt-icon">👫</span>Bạn bè
             </button>
           </div>
@@ -587,7 +714,46 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
         </div>
       </div>
 
-      <!-- SCREEN 4: KẾT QUẢ + FORM -->
+      <!-- SCREEN 4: NHẬP THÔNG TIN CÁ NHÂN -->
+      <div class="screen" id="screen-info">
+        <div class="info-screen-wrap">
+          <div style="font-size:32px;margin-bottom:10px">📋</div>
+          <div class="screen-title">Nhập thông tin để nhận kết quả</div>
+          <div class="screen-sub" style="margin-bottom:20px">Chúng tôi sẽ gửi kết quả đánh giá chi tiết và mã tra cứu về email của bạn</div>
+          <div id="infoSummaryBadge" class="info-summary-badge" style="margin-bottom:20px"></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Họ và tên *</label>
+            <input type="text" class="form-input" id="inp-name" placeholder="Nguyễn Văn A" oninput="checkFormReady()">
+            <div class="form-error" id="err-name">Vui lòng nhập họ tên</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Số điện thoại *</label>
+            <input type="tel" class="form-input" id="inp-phone" placeholder="0901 234 567" oninput="checkFormReady()">
+            <div class="form-error" id="err-phone">Số điện thoại không hợp lệ</div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Email *</label>
+            <input type="email" class="form-input" id="inp-email" placeholder="email@example.com" oninput="checkFormReady()">
+            <div class="form-error" id="err-email">Email không hợp lệ</div>
+          </div>
+        </div>
+
+        <div style="background:var(--bg);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--muted);margin-bottom:20px;line-height:1.6">
+          🔒 Thông tin của bạn được bảo mật. Lửa Việt Tours cam kết không chia sẻ dữ liệu với bên thứ ba.
+        </div>
+
+        <div class="nav-wrap">
+          <button class="btn btn-secondary" onclick="goBack('screen-questions'); renderQuestion();">← Quay lại</button>
+          <button class="btn btn-primary btn-lg" id="btnSendResult" disabled onclick="submitAndShowResult()">
+            Xem kết quả của tôi →
+          </button>
+        </div>
+      </div>
+
+      <!-- SCREEN 5: KẾT QUẢ NGẮN -->
       <div class="screen" id="screen-result">
         <div id="resultContent"></div>
       </div>
@@ -615,7 +781,7 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
       <a href="https://www.luavietours.com/gioi-thieu/" target="_blank">Giới thiệu</a>
       <a href="https://www.luavietours.com/tin-tuc/uu-dai-dac-biet-tai-lua-viet" target="_blank">Quyền lợi hoàn 100%</a>
     </div>
-    <p>© Lửa Việt Tours – Công cụ Đánh giá Xác suất Visa Du lịch</p>
+    <p class="footer-copyright">© Lửa Việt Tours – Đánh giá Xác suất Visa Du lịch</p>
     <p style="margin-top:4px;font-size:11px;opacity:0.6">Kết quả chỉ mang tính tham khảo. Không thay thế quyết định của cơ quan thẩm quyền.</p>
   </div>
 </footer>
@@ -627,15 +793,12 @@ footer .footer-links a+a{border-left:1px solid rgba(255,255,255,0.2)}
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyX3R4Hfx047GFwLCG0tr6nnxQziu4Jv36UF1lzmCAGPgv8xthgvJlmUKLv2Hq0_HOQVA/exec";
 
 const COUNTRIES = [
-  // Hàng 1
   { code:"TW", name:"Đài Loan",   iso:"tw" },
   { code:"CN", name:"Trung Quốc", iso:"cn" },
   { code:"KR", name:"Hàn Quốc",   iso:"kr" },
-  // Hàng 2
   { code:"JP", name:"Nhật Bản",   iso:"jp" },
   { code:"AU", name:"Úc",         iso:"au" },
   { code:"EU", name:"Châu Âu",    iso:"eu" },
-  // Hàng 3
   { code:"UK", name:"Anh",        iso:"gb" },
   { code:"US", name:"Mỹ",         iso:"us" },
   { code:"CA", name:"Canada",     iso:"ca" },
@@ -647,6 +810,10 @@ const GROUP_LABELS = {
   ASSET:"Tài sản & Ràng buộc", HISTORY:"Lịch sử du lịch",
 };
 
+const GROUP_ICONS = {
+  TRAVEL:"🛂", EMPLOYMENT:"💼", FINANCE:"💰", ASSET:"🏠", HISTORY:"✈️"
+};
+
 // ── STATE ──────────────────────────────────────────────
 const state = {
   country: null, visaType: null, travelGroup: null,
@@ -654,6 +821,7 @@ const state = {
   answers: {}, config: {}, hardFailQ: null,
   submissionId: null, resultLevel: null,
   softPct: 0, expiresAt: null,
+  groupScores: {},
 };
 
 // ── INIT ──────────────────────────────────────────────
@@ -665,22 +833,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function loadConfig() {
   try {
     const d = await apiFetch("getConfig");
-    if (d.success) {
-      state.config = d.config;
-
-    }
+    if (d.success) { state.config = d.config; }
   } catch(e) { console.warn("Config load failed:", e); }
-}
-
-// Cập nhật link lãnh sự cho tất cả thẻ quốc gia
-function updateConsulateLinks() {
-  COUNTRIES.forEach(c => {
-    const vl = document.getElementById("vl-" + c.code);
-    if (!vl) return;
-    const link = state.config["consulate_link_" + c.code];
-    if (link) { vl.href = link; vl.style.display = "block"; }
-    else { vl.style.display = "none"; }
-  });
 }
 
 async function loadFaq() {
@@ -708,7 +862,6 @@ function toggleFaq(i) {
   const item = document.getElementById("faq-"+i);
   const ans  = document.getElementById("faqA-"+i);
   const open = item.classList.contains("open");
-  // Đóng tất cả
   document.querySelectorAll(".faq-item.open").forEach(el => {
     el.classList.remove("open");
     el.querySelector(".faq-a").style.maxHeight = "0";
@@ -741,8 +894,6 @@ function selectCountry(code, el) {
   el.classList.add("selected");
   state.country = code;
   document.getElementById("btnCountryNext").disabled = false;
-
-  // Ẩn tất cả link trước, rồi chỉ hiện link của nước vừa chọn
   COUNTRIES.forEach(c => {
     const vl = document.getElementById("vl-" + c.code);
     if (vl) vl.style.display = "none";
@@ -761,7 +912,7 @@ function goToVisaType() {
   document.getElementById("visaTypeTitle").textContent =
     "Hình thức đi " + (cn ? cn.name : "");
   goTo("screen-visatype");
-  updateProgress(20, "Bước 2 / 4 – Hình thức & nhóm");
+  updateProgress(20, "Bước 2 / 5 – Hình thức & nhóm");
 }
 
 function selectVisaType(val, btn) {
@@ -792,8 +943,6 @@ async function startQuestions() {
     state.answers   = {};
     state.hardFailQ = null;
 
-    // Pre-answer câu PURPOSE từ selection đã làm ở bước 2
-    // (câu hỏi PURPOSE sẽ tự động có answer từ state.visaType / state.travelGroup)
     state.questions.forEach(q => {
       if (q.group === "PURPOSE") {
         if (q.options.includes(state.visaType)) {
@@ -816,10 +965,8 @@ async function startQuestions() {
 }
 
 function buildFilteredQuestions() {
-  // Loại bỏ câu PURPOSE (đã được trả lời ở bước 2)
-  // và áp dụng logic skip/show_if
   return state.questions.filter(q => {
-    if (q.group === "PURPOSE") return false; // đã xử lý
+    if (q.group === "PURPOSE") return false;
     return shouldShow(q);
   });
 }
@@ -846,16 +993,15 @@ function renderQuestion() {
   state.filteredQ = buildFilteredQuestions();
   const q     = state.filteredQ[state.currentQIdx];
   const total = state.filteredQ.length;
-  if (!q) { showResult(); return; }
+  if (!q) { goToInfoScreen(); return; }
 
-  const pct = Math.round(30 + (state.currentQIdx / total) * 55);
-  updateProgress(pct, `Câu ${state.currentQIdx + 1} / ${total}`);
+  const pct = Math.round(30 + (state.currentQIdx / total) * 45);
+  updateProgress(pct, `Bước 3 / 5 – Câu ${state.currentQIdx + 1} / ${total}`);
 
   const grpLabel = GROUP_LABELS[q.group] || q.group;
   const ans      = state.answers[q.question_id];
   const isHard   = q.score_type === "HARD";
 
-  // Lưu câu hỏi hiện tại vào state để các handler dùng
   state.currentQ = q;
 
   let inputHtml = "";
@@ -885,7 +1031,6 @@ function renderQuestion() {
       <div class="form-hint" style="margin-top:8px">Có thể chọn nhiều lựa chọn</div>`;
   }
 
-  // Hard fail warning nếu đã có câu cứng thất bại
   const failWarn = state.hardFailQ && state.hardFailQ !== q.question_id
     ? `<div class="result-box red" style="margin-bottom:16px;font-size:13px">
         ⚠️ Một điều kiện bắt buộc chưa được đáp ứng. Bạn vẫn có thể tiếp tục để nhận đánh giá đầy đủ.
@@ -904,7 +1049,6 @@ function renderQuestion() {
     state.currentQIdx === 0 ? "hidden" : "visible";
   document.getElementById("btnQNext").disabled = (ans === undefined || ans === "" || (Array.isArray(ans) && ans.length === 0));
 
-  // Gắn event listener cho wrap (tránh dùng onclick inline với JSON)
   const wrap = document.getElementById("inputWrap");
   if (wrap) {
     wrap.addEventListener("click", function(e) {
@@ -923,14 +1067,12 @@ function renderQuestion() {
 
 // ── ANSWER HANDLERS ───────────────────────────────────
 function answerYN(qid, val, q, btn) {
-  // q có thể được truyền vào hoặc lấy từ state
   const question = q || state.currentQ;
   state.answers[qid] = val;
   document.querySelectorAll(".yn-btn").forEach(b => {
     b.classList.remove("selected","fail-answer");
   });
   btn.classList.add("selected");
-  // Đánh dấu fail nếu HARD và không đạt
   if (question && question.score_type === "HARD" && !question.passing_answers.includes(val)) {
     btn.classList.add("fail-answer");
     state.hardFailQ = qid;
@@ -966,28 +1108,55 @@ function prevQuestion() {
     renderQuestion();
   } else {
     goBack("screen-visatype");
-    updateProgress(20, "Bước 2 / 4 – Hình thức & nhóm");
+    updateProgress(20, "Bước 2 / 5 – Hình thức & nhóm");
   }
 }
 
 function nextQuestion() {
   state.currentQIdx++;
   if (state.currentQIdx >= state.filteredQ.length) {
-    showResult();
+    goToInfoScreen();
   } else {
     renderQuestion();
   }
 }
 
-// ── SCREEN 4: KẾT QUẢ ────────────────────────────────
-function showResult() {
-  updateProgress(95, "Kết quả đánh giá");
-  goTo("screen-result");
+// ── SCREEN 4: NHẬP THÔNG TIN ─────────────────────────
+function goToInfoScreen() {
+  const cn = COUNTRIES.find(c => c.code === state.country);
+  const cnName = cn ? cn.name : state.country;
+  document.getElementById("infoSummaryBadge").innerHTML =
+    `<strong>${cnName}</strong> &nbsp;·&nbsp; ${state.visaType} &nbsp;·&nbsp; ${state.travelGroup}`;
+  goTo("screen-info");
+  updateProgress(80, "Bước 4 / 5 – Thông tin cá nhân");
+}
 
-  // Chấm điểm phía client
+function checkFormReady() {
+  const name  = document.getElementById("inp-name").value.trim();
+  const phone = document.getElementById("inp-phone").value.trim();
+  const email = document.getElementById("inp-email").value.trim();
+  const ready = name.length >= 2 && /^[0-9\s+\-()]{8,15}$/.test(phone) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  document.getElementById("btnSendResult").disabled = !ready;
+}
+
+// ── SCREEN 5: SUBMIT + HIỂN THỊ KẾT QUẢ NGẮN ────────
+async function submitAndShowResult() {
+  const name  = document.getElementById("inp-name").value.trim();
+  const phone = document.getElementById("inp-phone").value.trim();
+  const email = document.getElementById("inp-email").value.trim();
+  if (!name || !phone || !email) return;
+
+  const btn = document.getElementById("btnSendResult");
+  btn.disabled = true;
+  showLoading("Đang phân tích hồ sơ...");
+
+  // Tính điểm client-side trước
   const scoring = scoreAnswers(state.questions, state.answers);
-  const cfg     = state.config;
-  const passThr  = Number(cfg.pass_threshold_pct  || 80);
+  const groupScores = scoreByGroup(state.questions, state.answers);
+  state.groupScores = groupScores;
+
+  const cfg      = state.config;
+  const passThr  = Number(cfg.pass_threshold_pct  || 85);
   const medThr   = Number(cfg.medium_threshold_pct || 60);
 
   let level;
@@ -997,141 +1166,9 @@ function showResult() {
   else level = "LOW";
 
   state.resultLevel = level;
-  state.softPct     = scoring.pct;
+  state.softPct = scoring.pct;
 
-  const cn   = COUNTRIES.find(c => c.code === state.country);
-  const cnName = cn ? cn.name : state.country;
-  const tourLink = cfg["tour_link_"+state.country] || "https://www.luavietours.com";
-  const benefitLink = cfg.benefit_link || "https://www.luavietours.com/tin-tuc/uu-dai-dac-biet-tai-lua-viet";
-  const phone = cfg.contact_phone || "1900 6420";
-  const zalo  = cfg.contact_zalo  || "https://zalo.me/luavietours";
-
-  const LEVEL_CFG = {
-    PASS:   { icon:"✓", label:"ĐẠT", cls:"pass",
-              head:"Chúc mừng! Bạn đạt tiêu chí Quyền lợi Hoàn 100%",
-              body:`Khi đăng ký tour <strong>${cnName}</strong> tại Lửa Việt và không đạt visa, bạn được hoàn toàn bộ chi phí tour. Gửi kết quả về email để nhận mã tra cứu và áp dụng quyền lợi.`,
-              boxCls:"green" },
-    MEDIUM: { icon:"⚡", label:"TRUNG BÌNH", cls:"medium",
-              head:"Hồ sơ cần được tư vấn thêm",
-              body:"Kết quả cho thấy một số tiêu chí cần cải thiện. Hãy liên hệ đội ngũ tư vấn Lửa Việt để được hỗ trợ bổ sung hồ sơ miễn phí.",
-              boxCls:"amber" },
-    LOW:    { icon:"✗", label:"RỦI RO CAO", cls:"low",
-              head:"Cần tư vấn trực tiếp trước khi nộp hồ sơ",
-              body:"Hồ sơ hiện tại có điểm chưa đáp ứng yêu cầu lãnh sự. Lửa Việt khuyến nghị bạn liên hệ tư vấn viên để được hỗ trợ.",
-              boxCls:"red" },
-  };
-  const lv = LEVEL_CFG[level];
-
-  // Bảng Q&A
-  let qaHtml = "";
-  const groups = [...new Set(state.questions.filter(q=>q.group!=="PURPOSE").map(q=>q.group))];
-  groups.forEach(grp => {
-    const qs = state.filteredQ.filter(q => q.group === grp && state.answers[q.question_id] !== undefined);
-    if (!qs.length) return;
-    qaHtml += `<tr class="qa-group-row"><td colspan="2">${GROUP_LABELS[grp]||grp}</td></tr>`;
-    qs.forEach(q => {
-      const ans = state.answers[q.question_id];
-      const ansStr = Array.isArray(ans) ? ans.join(", ") : ans;
-      const isHardFail = q.score_type==="HARD" && !q.passing_answers.includes(ansStr);
-      qaHtml += `<tr>
-        <td>${q.question_vi}</td>
-        <td style="${isHardFail?"color:var(--red);font-weight:600":""}">${ansStr}${isHardFail?' ⚠️':''}</td>
-      </tr>`;
-    });
-  });
-
-  document.getElementById("resultContent").innerHTML = `
-    <div class="result-header ${lv.cls}">
-      <div class="result-icon">${lv.icon}</div>
-      <div class="result-level ${lv.cls}">MỨC ${lv.label}</div>
-      <div class="result-score">${cnName} · ${state.visaType} · Điểm: ${scoring.pct.toFixed(1)}%</div>
-    </div>
-
-    <div class="result-box ${lv.boxCls}">
-      <strong>${lv.head}</strong><br>${lv.body}
-      ${level==="PASS" ? `<br><a href="${benefitLink}" target="_blank" style="color:var(--green);font-weight:600">Xem chi tiết quyền lợi ↗</a>` : ""}
-    </div>
-
-    <!-- LIÊN HỆ TƯ VẤN -->
-    <div style="background:var(--blue-light);border:1px solid #BFDBFE;border-radius:var(--radius);padding:18px 20px;margin-bottom:20px">
-      <div style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:10px">Liên hệ Tư vấn Visa – Lửa Việt Tours</div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13.5px;color:var(--slate)">
-        <span>Hotline: <a href="tel:${phone}" style="color:var(--red);font-weight:700">${phone}</a></span>
-        <span>Zalo OA: <a href="${zalo}" target="_blank" style="color:var(--blue)">Nhắn tin ngay</a></span>
-        <span>Tour ${cnName}: <a href="${tourLink}" target="_blank" style="color:var(--blue)">Xem lịch khởi hành</a></span>
-      </div>
-    </div>
-
-    <!-- FORM GỬI EMAIL -->
-    <div class="submit-panel">
-      <div class="submit-title">Lưu kết quả về email cá nhân</div>
-      <div class="submit-desc">Nhập thông tin để nhận kết quả đầy đủ, mã tra cứu và liên hệ tư vấn viên. Thông tin chỉ được lưu khi bạn chủ động gửi.</div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label class="form-label">Họ và tên *</label>
-          <input type="text" class="form-input" id="inp-name" placeholder="Nguyễn Văn A" oninput="checkFormReady()">
-          <div class="form-error" id="err-name">Vui lòng nhập họ tên</div>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Số điện thoại *</label>
-          <input type="tel" class="form-input" id="inp-phone" placeholder="0901 234 567" oninput="checkFormReady()">
-          <div class="form-error" id="err-phone">Số điện thoại không hợp lệ</div>
-        </div>
-        <div class="form-group full">
-          <label class="form-label">Email *</label>
-          <input type="email" class="form-input" id="inp-email" placeholder="email@example.com" oninput="checkFormReady()">
-          <div class="form-error" id="err-email">Email không hợp lệ</div>
-        </div>
-      </div>
-      <div style="background:var(--bg);border-radius:8px;padding:12px 16px;font-size:12.5px;color:var(--muted);margin-bottom:16px;line-height:1.6">
-        Thông tin của bạn được bảo mật. Lửa Việt Tours cam kết không chia sẻ dữ liệu với bên thứ ba.
-      </div>
-      <button class="btn btn-primary btn-full btn-lg" id="btnSubmit" disabled onclick="submitResult()">
-        Gửi kết quả về email của tôi
-      </button>
-      <div id="submitStatus" style="margin-top:12px;text-align:center;font-size:13px;display:none"></div>
-    </div>
-
-    <!-- Chi tiết câu trả lời -->
-    <div style="margin-bottom:20px">
-      <div style="font-size:14px;font-weight:600;color:var(--navy);border-bottom:2px solid var(--border);padding-bottom:8px;margin-bottom:12px">
-        Chi tiết câu trả lời của bạn
-      </div>
-      <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden">
-        <table class="qa-table">
-          <tr><th>Câu hỏi</th><th>Câu trả lời</th></tr>
-          ${qaHtml}
-        </table>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:24px">
-      <button class="btn btn-secondary" onclick="resetTool()">← Đánh giá lại từ đầu</button>
-    </div>
-  `;
-}
-
-// ── SUBMIT ────────────────────────────────────────────
-function checkFormReady() {
-  const name  = document.getElementById("inp-name").value.trim();
-  const phone = document.getElementById("inp-phone").value.trim();
-  const email = document.getElementById("inp-email").value.trim();
-  const ready = name.length >= 2 && /^[0-9\s+\-()]{8,15}$/.test(phone) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  document.getElementById("btnSubmit").disabled = !ready;
-}
-
-async function submitResult() {
-  const name  = document.getElementById("inp-name").value.trim();
-  const phone = document.getElementById("inp-phone").value.trim();
-  const email = document.getElementById("inp-email").value.trim();
-
-  if (!name || !phone || !email) return;
-
-  const btn = document.getElementById("btnSubmit");
-  btn.disabled = true;
-  btn.textContent = "Đang gửi...";
-  showLoading("Đang gửi kết quả...");
-
+  // Gửi lên server (async, không block hiển thị)
   try {
     const resp = await fetch(APPS_SCRIPT_URL, {
       method:"POST",
@@ -1156,35 +1193,138 @@ async function submitResult() {
       }),
     });
     const d = await resp.json();
-
-    hideLoading();
     if (d.success) {
       state.submissionId = d.submission_id;
       state.expiresAt    = d.expires_at;
-
-      document.getElementById("submitStatus").style.display = "block";
-      document.getElementById("submitStatus").innerHTML = `
-        <div class="result-box green" style="text-align:left">
-          ✅ <strong>Đã gửi thành công!</strong><br>
-          Mã tra cứu của bạn: <strong style="font-family:monospace;letter-spacing:2px;font-size:16px">${d.submission_id}</strong><br>
-          ${d.expires_at ? `Hiệu lực đến: <strong>${d.expires_at}</strong>` : ""}
-          <br><span style="font-size:12px">Vui lòng kiểm tra hộp thư (kể cả thư mục Spam)</span>
-        </div>`;
-      updateProgress(100, "Hoàn tất");
-      btn.textContent = "✓ Đã gửi";
-      showToast("Kết quả đã gửi về " + email, "success");
-    } else {
-      throw new Error(d.error || "Lỗi không xác định");
     }
   } catch(err) {
-    hideLoading();
-    btn.disabled = false;
-    btn.textContent = "Gửi kết quả về email của tôi";
-    showToast("Gửi thất bại: " + err.message, "error");
+    console.warn("Submit failed:", err);
   }
+
+  hideLoading();
+  showResultScreen(name, email, level, scoring, groupScores);
 }
 
-// ── SCORING (client-side preview) ─────────────────────
+function showResultScreen(name, email, level, scoring, groupScores) {
+  updateProgress(100, "Bước 5 / 5 – Kết quả đánh giá");
+  goTo("screen-result");
+
+  const cn = COUNTRIES.find(c => c.code === state.country);
+  const cnName = cn ? cn.name : state.country;
+  const cfg = state.config;
+  const tourLink    = cfg["tour_link_"  + state.country] || "https://www.luavietours.com";
+  const benefitLink = cfg.benefit_link  || "https://www.luavietours.com/tin-tuc/uu-dai-dac-biet-tai-lua-viet";
+  const phone_cfg   = cfg.contact_phone || "1900 6420";
+  const zalo        = cfg.contact_zalo  || "https://zalo.me/luavietours";
+
+  // Hiển thị % (max 99%)
+  const displayPct = Math.min(scoring.pct, 99).toFixed(0);
+  const scoreClass = level === "PASS" ? "pass" : level === "MEDIUM" ? "medium" : "low";
+
+  // Message theo mức
+  const MSG = {
+    PASS: {
+      title: "🎉 Hồ sơ của bạn rất tiềm năng!",
+      body: `Qua đánh giá sơ bộ, hồ sơ của bạn đáp ứng tốt các tiêu chí xét duyệt visa <strong>${cnName}</strong>. Bạn có khả năng cao được hưởng <strong>Quyền lợi Hoàn 100% chi phí tour</strong> nếu không may visa bị từ chối khi đăng ký tour cùng Lửa Việt – vì chúng tôi tin vào hồ sơ của bạn!`,
+      note: `Để áp dụng quyền lợi, hãy giữ lại mã tra cứu trong email. Kết quả chi tiết đã được gửi về <strong>${email}</strong>.`
+    },
+    MEDIUM: {
+      title: "💡 Hồ sơ của bạn có triển vọng tốt!",
+      body: `Đánh giá cho thấy hồ sơ của bạn đang ở mức tương đối tốt với nhiều điểm tích cực. Bạn vẫn có cơ hội nhận <strong>Quyền lợi Hoàn 100%</strong> khi đi tour cùng Lửa Việt. Chỉ cần trao đổi thêm với tư vấn viên để tối ưu hồ sơ, xác suất sẽ được cải thiện đáng kể!`,
+      note: `Kết quả phân tích chi tiết đã được gửi về <strong>${email}</strong>. Tư vấn viên sẽ liên hệ hỗ trợ bạn trong thời gian sớm nhất.`
+    },
+    LOW: {
+      title: "🤝 Hồ sơ cần được tư vấn thêm",
+      body: `Đánh giá sơ bộ cho thấy hồ sơ của bạn có một số điểm cần chuẩn bị thêm để tăng xác suất. Đừng lo – đây là lý do đội ngũ tư vấn Lửa Việt tồn tại! <strong>Tư vấn hoàn toàn miễn phí</strong>, và chúng tôi đã giúp hàng nghìn khách hàng cải thiện hồ sơ thành công.`,
+      note: `Kết quả và gợi ý cải thiện chi tiết đã được gửi về <strong>${email}</strong>.`
+    }
+  };
+
+  const msg = MSG[level];
+
+  // Component scores HTML
+  const compGroups = ["TRAVEL","EMPLOYMENT","FINANCE","ASSET","HISTORY"];
+  let compHtml = "";
+  compGroups.forEach(grp => {
+    const gs = groupScores[grp];
+    if (!gs || gs.max === 0) return;
+    const pctG = Math.round((gs.score / gs.max) * 100);
+    const barCls = pctG >= 75 ? "high" : pctG >= 50 ? "mid" : "low-bar";
+    const icon = GROUP_ICONS[grp] || "📊";
+    const label = GROUP_LABELS[grp] || grp;
+    const hardFailMark = gs.hardFail ? ' ⚠️' : '';
+    compHtml += `
+      <div class="comp-item">
+        <div class="comp-icon">${icon}</div>
+        <div style="flex:1;min-width:0">
+          <div class="comp-label">${label}${hardFailMark}</div>
+          <div class="comp-bar-wrap"><div class="comp-bar ${barCls}" style="width:${pctG}%"></div></div>
+          <div class="comp-score-txt" style="color:${barCls==='high'?'var(--green)':barCls==='mid'?'#B45309':'var(--red)'}">${pctG}%</div>
+        </div>
+      </div>`;
+  });
+
+  // Mã tra cứu (nếu đã có)
+  const codeHtml = state.submissionId ? `
+    <div style="background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;padding:14px;text-align:center;margin-bottom:16px">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Mã tra cứu của bạn</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:3px;font-family:monospace;color:var(--navy)">${state.submissionId}</div>
+      ${state.expiresAt ? `<div style="font-size:12px;color:var(--muted);margin-top:4px">Hiệu lực đến: <strong>${state.expiresAt}</strong></div>` : ""}
+    </div>` : "";
+
+  document.getElementById("resultContent").innerHTML = `
+    <div class="result-summary-wrap">
+      <!-- Score Circle -->
+      <div class="score-gauge">
+        <div class="score-circle ${scoreClass}">
+          <div class="score-number ${scoreClass}">${displayPct}<span style="font-size:18px">%</span></div>
+          <div class="score-unit">Điểm đánh giá</div>
+        </div>
+        <div style="font-size:13px;color:var(--muted)">Hồ sơ ${cnName} · ${state.visaType}</div>
+      </div>
+    </div>
+
+    <!-- Điểm thành phần -->
+    <div style="margin-bottom:16px">
+      <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px">Điểm thành phần</div>
+      <div class="component-scores">${compHtml}</div>
+    </div>
+
+    <!-- Thông điệp kết quả -->
+    <div class="result-msg ${scoreClass}">
+      <div style="font-weight:700;font-size:15px;margin-bottom:8px">${msg.title}</div>
+      <div style="line-height:1.7">${msg.body}</div>
+    </div>
+
+    <!-- Thông báo email -->
+    <div class="email-notice">
+      <div class="email-notice-icon">📧</div>
+      <div>
+        <div style="font-weight:600;margin-bottom:4px">Kết quả chi tiết đã được gửi vào email của bạn</div>
+        <div>${msg.note}</div>
+        ${level === "PASS" ? `<div style="margin-top:8px"><a href="${benefitLink}" target="_blank" style="color:var(--blue);font-weight:600">Xem chi tiết Quyền lợi Hoàn 100% ↗</a></div>` : ""}
+      </div>
+    </div>
+
+    ${codeHtml}
+
+    <!-- Liên hệ tư vấn -->
+    <div style="background:var(--blue-light);border:1px solid #BFDBFE;border-radius:var(--radius);padding:18px 20px;margin-bottom:20px">
+      <div style="font-size:14px;font-weight:700;color:var(--blue);margin-bottom:10px">Liên hệ Tư vấn Visa – Lửa Việt Tours</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13.5px;color:var(--slate)">
+        <span>Hotline: <a href="tel:${phone_cfg}" style="color:var(--red);font-weight:700">${phone_cfg}</a></span>
+        <span>Zalo OA: <a href="${zalo}" target="_blank" style="color:var(--blue)">Nhắn tin ngay</a></span>
+        <span>Tour ${cnName}: <a href="${tourLink}" target="_blank" style="color:var(--blue)">Xem lịch khởi hành</a></span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn btn-secondary" onclick="resetTool()">← Đánh giá lại từ đầu</button>
+    </div>
+  `;
+}
+
+// ── SCORING ─────────────────────────────────────────
 function scoreAnswers(questions, answers) {
   let hardFail = false, score = 0, max = 0;
   for (const q of questions) {
@@ -1217,6 +1357,45 @@ function scoreAnswers(questions, answers) {
   return { hardFail, score, max, pct: max > 0 ? (score/max)*100 : 0 };
 }
 
+// Tính điểm theo nhóm
+function scoreByGroup(questions, answers) {
+  const groups = {};
+  for (const q of questions) {
+    if (q.group === "PURPOSE") continue;
+    const grp = q.group;
+    if (!groups[grp]) groups[grp] = { score:0, max:0, hardFail:false };
+    const ans = answers[q.question_id];
+    if (ans === undefined || ans === null) continue;
+    const type    = String(q.score_type).toUpperCase();
+    const passing = q.passing_answers || [];
+    const weight  = Number(q.score_weight) || 0;
+    const partial = q.score_partial || {};
+
+    if (type === "HARD") {
+      const arr = Array.isArray(ans) ? ans : [ans];
+      if (!arr.every(a => passing.includes(a))) groups[grp].hardFail = true;
+      // HARD câu cũng tính 1 điểm symbolic vào nhóm
+      groups[grp].max += 10;
+      groups[grp].score += arr.every(a => passing.includes(a)) ? 10 : 0;
+    } else if (type === "SOFT") {
+      groups[grp].max += weight;
+      if (Object.keys(partial).length > 0) {
+        if (Array.isArray(ans)) {
+          let best = 0;
+          ans.forEach(a => { if (partial[a]!==undefined) best = Math.max(best, Number(partial[a])); });
+          groups[grp].score += best;
+        } else {
+          groups[grp].score += partial[ans] !== undefined ? Number(partial[ans]) : 0;
+        }
+      } else {
+        const arr = Array.isArray(ans) ? ans : [ans];
+        groups[grp].score += arr.every(a => passing.includes(a)) ? weight : 0;
+      }
+    }
+  }
+  return groups;
+}
+
 // ── NAVIGATION HELPERS ────────────────────────────────
 function goTo(screenId) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
@@ -1224,17 +1403,22 @@ function goTo(screenId) {
   window.scrollTo({ top: document.getElementById("tool").offsetTop - 80, behavior:"smooth" });
 }
 
-function goBack(screenId) {
-  goTo(screenId);
-}
+function goBack(screenId) { goTo(screenId); }
 
 function resetTool() {
   state.country = null; state.visaType = null; state.travelGroup = null;
   state.questions = []; state.filteredQ = []; state.currentQIdx = 0;
   state.answers = {}; state.hardFailQ = null;
+  state.submissionId = null; state.resultLevel = null;
   document.querySelectorAll(".country-card").forEach(c => c.classList.remove("selected"));
   document.getElementById("btnCountryNext").disabled = true;
-  updateProgress(5, "Bước 1");
+  // Reset form inputs
+  ["inp-name","inp-phone","inp-email"].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  document.getElementById("btnSendResult").disabled = true;
+  updateProgress(5, "Bước 1 / 5");
   goTo("screen-country");
 }
 
