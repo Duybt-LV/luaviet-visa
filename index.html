@@ -897,14 +897,26 @@ function shouldShow(q) {
   const skipQ = q.skip_if_question;
   const skipV = q.skip_if_value;
 
+  // Parse: nếu value là JSON array thì trả mảng, ngược lại string đơn
+  function parseVal(v) {
+    if (!v) return null;
+    const s = String(v).trim();
+    if (s.startsWith('[')) { try { return JSON.parse(s); } catch(e) {} }
+    return s;
+  }
+
   if (skipQ && skipV) {
-    const ans = state.answers[skipQ];
-    if (ans === skipV || (Array.isArray(ans) && ans.includes(skipV))) return false;
+    const ans     = state.answers[skipQ];
+    const skipArr = [].concat(parseVal(skipV));
+    const ansArr  = [].concat(ans);
+    if (skipArr.some(v => ansArr.includes(v))) return false;
   }
   if (showQ && showV) {
     const ans = state.answers[showQ];
     if (ans === undefined) return false;
-    if (ans !== showV && !(Array.isArray(ans) && ans.includes(showV))) return false;
+    const showArr = [].concat(parseVal(showV));
+    const ansArr  = [].concat(ans);
+    if (!showArr.some(v => ansArr.includes(v))) return false;
   }
   return true;
 }
