@@ -1750,6 +1750,27 @@ function closePricing() {
   document.body.style.overflow = "";
 }
 
+function resetAppointmentForm() {
+  // Ẩn success, hiện lại form
+  document.getElementById("apptSuccess").classList.remove("show");
+  document.getElementById("apptFormWrap").style.display = "";
+  // Reset các field
+  ["apt-name","apt-phone","apt-email","apt-note"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  ["apt-visa","apt-date","apt-time"].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = "";
+  });
+  // Reset submit button
+  var btn = document.getElementById("aptSubmitBtn");
+  if (btn) { btn.disabled = false; btn.textContent = "📅 Đặt lịch tư vấn miễn phí"; }
+  // Scroll to form
+  var form = document.getElementById("apptFormWrap");
+  if (form) form.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 // Close on overlay click
 document.getElementById("pricingOverlay").addEventListener("click", function(e) {
   if (e.target === this) closePricing();
@@ -1907,7 +1928,6 @@ async function submitAppointment() {
         Mã lịch hẹn của bạn: <strong style="font-family:monospace;letter-spacing:1.5px;color:var(--green)">${d.appointment_id}</strong><br>
         Chuyên viên sẽ gọi cho bạn vào <strong>${time}</strong> ngày <strong>${dateVN}</strong>.<br>
         ${d.email_sent ? '📧 Email xác nhận đã được gửi đến hộp thư của bạn.' : ''}
-        ${d.linked_submission_id ? '<br>🔗 Hệ thống đã liên kết với bài đánh giá <strong>' + d.linked_submission_id + '</strong> của bạn.' : ''}
       `;
     } else {
       throw new Error(d.error || "Lỗi không xác định");
@@ -2122,6 +2142,9 @@ async function submitAppointment() {
           <div style="font-size:36px;margin-bottom:12px">🎉</div>
           <div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:6px">Đặt lịch thành công!</div>
           <div id="apptSuccessMsg" style="font-size:13.5px;color:var(--slate);line-height:1.7"></div>
+          <button onclick="resetAppointmentForm()" style="margin-top:16px;background:transparent;border:1.5px solid var(--green);color:var(--green);padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all 0.15s" onmouseover="this.style.background='var(--green-bg)'" onmouseout="this.style.background='transparent'">
+            + Tạo lịch hẹn khác
+          </button>
         </div>
       </div>
 
