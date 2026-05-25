@@ -686,16 +686,39 @@ footer .footer-copyright{white-space:nowrap;overflow:hidden;text-overflow:ellips
 }
 
 /* Country tabs */
-.pm-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;
-  max-height:none;}
+/* Desktop: 2 hàng cố định – hàng 1: 5 nước, hàng 2: 4 nước, canh giữa */
+.pm-tabs{ margin-bottom:20px; }
+
+/* Desktop: 2 hàng (5 + 4), canh giữa */
+.pm-tabs-desktop{ display:flex; flex-direction:column; align-items:center; gap:6px; }
+.pm-tabs-mobile{ display:none; }
+
+/* Mobile: 3 hàng x 3 nước */
+@media(max-width:700px){
+  .pm-tabs-desktop{ display:none; }
+  .pm-tabs-mobile{ display:flex; flex-direction:column; gap:6px; }
+}
+
+.pm-tabs-row{
+  display:flex;
+  justify-content:center;
+  gap:6px;
+}
 .pm-tab{
   border:1.5px solid var(--border);border-radius:8px;
   padding:7px 14px;cursor:pointer;font-size:12.5px;font-weight:600;
   color:var(--slate);background:var(--white);font-family:inherit;
-  transition:all 0.15s;display:flex;align-items:center;gap:6px;
+  transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:6px;
+  white-space:nowrap;
 }
 .pm-tab:hover{border-color:var(--red);color:var(--red)}
 .pm-tab.active{border-color:var(--red);background:#FFF5F5;color:var(--red)}
+
+/* Mobile: nút giãn đều trong hàng */
+@media(max-width:700px){
+  .pm-tabs-mobile .pm-tabs-row{ justify-content:stretch; }
+  .pm-tabs-mobile .pm-tab{ flex:1; }
+}
 
 /* Pricing table */
 .pm-table-wrap{overflow-x:auto;margin-bottom:28px}
@@ -1820,20 +1843,84 @@ function renderPricingFallback() {
 }
 
 function renderPricingTabs() {
-  var countries = [];
+  // Thứ tự cố định:
+  // Desktop hàng 1: TW CN KR JP AU  |  hàng 2: EU UK US CA
+  // Mobile 3×3:     TW CN KR / JP AU EU / UK US CA
+  var COUNTRY_ORDER = ["TW","CN","KR","JP","AU","EU","UK","US","CA"];
+  var available = [];
   pricingData.forEach(function(p){
-    if (countries.indexOf(p.country_code) === -1) countries.push(p.country_code);
+    if (available.indexOf(p.country_code) === -1) available.push(p.country_code);
   });
+  var countries = COUNTRY_ORDER.filter(function(cc){ return available.indexOf(cc) !== -1; });
+  available.forEach(function(cc){ if (COUNTRY_ORDER.indexOf(cc) === -1) countries.push(cc); });
+
   var tabs = document.getElementById("pmTabs");
   tabs.innerHTML = "";
-  countries.forEach(function(cc) {
+
+  // Desktop: hàng 1 = 5 nước đầu, hàng 2 = còn lại
+  // Mobile:  mỗi hàng 3 nước
+  var DESKTOP_ROW1 = 5; // 5 nước hàng 1 (TW CN KR JP AU)
+  var MOBILE_PER_ROW = 3;
+
+  function makeRow() {
+    var row = document.createElement("div");
+    row.className = "pm-tabs-row";
+    return row;
+  }
+  function makeBtn(cc) {
     var btn = document.createElement("button");
     btn.className = "pm-tab" + (cc === currentPricingCountry ? " active" : "");
     btn.setAttribute("data-cc", cc);
     btn.innerHTML = getFlag(cc) + (COUNTRY_NAMES_MAP[cc] || cc);
     btn.addEventListener("click", function(){ selectPricingCountry(this.getAttribute("data-cc")); });
-    tabs.appendChild(btn);
+    return btn;
+  }
+
+  // Tạo rows desktop (5 + 4) à rows mobile (3+3+3)
+  // Giải pháp: tạo 3 rows môi trường mobile (3 nước/row),
+  // ọn CSS sẽ đổi thành 2 rows desktop qua flex-direction + media query ở .pm-tabs-row
+
+  // Cách tốt nhất: Wrapper ngoài là flex-column; mỗi .pm-tabs-row là 1 hàng.
+  // Desktop (>700px): hàng 1 = 5 nước, hàng 2 = 4 nước
+  // Mobile  (≤700px): 3 hàng x 3 nước = 9 items
+
+  // Tạo cấu trúc rows desktop (5 + 4)
+  var desktopRows = [];
+  desktopRows.push(countries.slice(0, DESKTOP_ROW1));       // hàng 1: 5
+  if (countries.length > DESKTOP_ROW1) {
+    desktopRows.push(countries.slice(DESKTOP_ROW1));        // hàng 2: còn lại
+  }
+
+  // Tạo cấu trúc rows mobile (3 + 3 + 3)
+  var mobileGroups = [];
+  for (var i = 0; i < countries.length; i += MOBILE_PER_ROW) {
+    mobileGroups.push(countries.slice(i, i + MOBILE_PER_ROW));
+  }
+
+  // Render: ưu tiên structure mobile (3 row) vì CSS sẽ ẩn/hiện đúng
+  // Nhưng một bộ nút không thể vừa desktop-2row vừa mobile-3row cùng lúc bằng DOM đơn giản.
+  // Giải pháp: render cả 2 bộ, ẩn/hiện qua CSS class.
+
+  // Bộ desktop (class pm-tabs-desktop)
+  var deskWrap = document.createElement("div");
+  deskWrap.className = "pm-tabs-desktop";
+  desktopRows.forEach(function(row) {
+    var rowEl = makeRow();
+    row.forEach(function(cc){ rowEl.appendChild(makeBtn(cc)); });
+    deskWrap.appendChild(rowEl);
   });
+
+  // Bộ mobile (class pm-tabs-mobile)
+  var mobWrap = document.createElement("div");
+  mobWrap.className = "pm-tabs-mobile";
+  mobileGroups.forEach(function(row) {
+    var rowEl = makeRow();
+    row.forEach(function(cc){ rowEl.appendChild(makeBtn(cc)); });
+    mobWrap.appendChild(rowEl);
+  });
+
+  tabs.appendChild(deskWrap);
+  tabs.appendChild(mobWrap);
 }
 
 function selectPricingCountry(cc) {
